@@ -9,19 +9,12 @@ pipeline {
                         branch: 'dev'
             }
         }
-        stage('Build') {
-            agent { label 'Docker' }
-            tools { maven 'Maven' }
-            steps{
-                sh 'mvn package'
-            }
-        }
-        stage('JUNIT') {
-            agent { label 'Docker' }
+        stage('Sonar Analysis') {
+            agent(label 'Build')
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-3.1.0-SNAPSHOT.jar',
-                                 onlyIfSuccessful: true
-                junit testResults: '**/surefire-reports/TEST-*.xml'
+                withSonarQubeEnv('SONAR_CLOUD') {
+                    sh 'mvn clean verify sonar:sonar'
+                }
             }
         }
         stage('Docker Image Build & Test') {
