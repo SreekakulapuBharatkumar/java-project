@@ -1,5 +1,5 @@
 FROM maven:3.8.3-openjdk-17 AS Build
-RUN git clone git@github.com:SreekakulapuBharatkumar/java-project.git
+RUN git clone https://github.com/SreekakulapuBharatkumar/java-project.git
 WORKDIR java-project
 RUN mvn package
 
