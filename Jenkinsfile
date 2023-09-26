@@ -11,8 +11,8 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             agent { label 'Docker' }
+            tools { scannerHome 'SonarQube_Scanner' }
             steps {
-                def scannerHome = tool 'SonarQube_Scanner'
                 withSonarQubeEnv('SONARQUBE') {
                 sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
                     -D sonar.projectVersion=1.0-SNAPSHOT \
