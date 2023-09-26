@@ -10,6 +10,7 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+            agent { label 'Docker' }
             def scannerHome = tool 'SonarQube_Scanner'
             steps {
                 withSonarQubeEnv('SONARQUBE') {
