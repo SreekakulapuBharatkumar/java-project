@@ -11,13 +11,12 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             agent { label 'Docker' }
-            tools { scannerHome 'SonarQube_Scanner' }
             steps {
                 withSonarQubeEnv('SONARQUBE') {
                 sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
                     -D sonar.projectVersion=1.0-SNAPSHOT \
                     -D sonar.login=admin \
-                    -D sonar.password=admin \
+                    -D sonar.password=Sreeka@097 \
                     -D sonar.projectBaseDir=/var/lib/jenkins/workspace/jenkins-sonar/ \
                     -D sonar.projectKey=my-app1 \
                     -D sonar.sourceEncoding=UTF-8 \
