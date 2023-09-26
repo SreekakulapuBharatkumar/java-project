@@ -10,10 +10,10 @@ pipeline {
             }
         }
         stage('Sonar Analysis') {
-            agent(label 'Build')
+            agent { label 'Docker' }
             steps {
-                withSonarQubeEnv('SONAR_CLOUD') {
-                    sh 'mvn clean verify sonar:sonar'
+                withSonarQubeEnv('SONARQUBE') {
+                    sh 'mvn clean package sonar:sonar -Dsonar.organization=javaproject'
                 }
             }
         }
@@ -21,11 +21,15 @@ pipeline {
             agent { label 'Docker' }
             steps {
                 sh 'docker image build -t spc:latest .'
-                sh 'docker image tag spc:latest bharatnar/spc:latest'
-                sh 'docker image tag spc:latest bharatnar/spc:${BUILD_NUMBER}'
-                sh 'docker image push bharatnar/spc:latest'
-                sh 'docker image push bharatnar/spc:${BUILD_NUMBER}'
             }
-        }                
+        } 
+        stage('post build') {
+            agent { label 'Docker' }
+            steps {
+                archiveArtifacts artifacts: '**/target/spring-petclinic-3.1.0-SNAPSHOT.jar',
+                                 onlyIfSuccessful: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'
+            }
+        }               
     }
 }
