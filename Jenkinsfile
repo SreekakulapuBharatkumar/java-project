@@ -9,12 +9,20 @@ pipeline {
                         branch: 'dev'
             }
         }
-        stage('Sonar Analysis') {
-            agent { label 'Docker' }
-            steps {
-                withSonarQubeEnv('SONARQUBE') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.organization=javaproject'
-                }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'SonarQube_Scanner'
+            withSonarQubeEnv('SONARQUBE') {
+            sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
+                -D sonar.projectVersion=1.0-SNAPSHOT \
+                -D sonar.login=admin \
+                -D sonar.password=admin \
+                -D sonar.projectBaseDir=/var/lib/jenkins/workspace/jenkins-sonar/ \
+                -D sonar.projectKey=my-app1 \
+                -D sonar.sourceEncoding=UTF-8 \
+                -D sonar.language=java \
+                -D sonar.sources=my-app/src/main \
+                -D sonar.tests=my-app/src/test \
+                -D sonar.host.url=http://34.211.24.132:8383/"""
             }
         }
         stage('Docker Image Build & Test') {
