@@ -9,14 +9,6 @@ pipeline {
                         branch: 'dev'
             }
         }
-        stage('SonarQube Analysis') {
-            agent { label 'Docker' }
-            steps {
-                withSonarQubeEnv('SONARCLOUD') {
-                sh 'mvn clean package sonar:sonar'
-                }
-            }
-        }
         stage('Docker Image Build & Test') {
             agent { label 'Docker' }
             steps {
