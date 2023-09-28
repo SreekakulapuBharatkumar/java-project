@@ -10,6 +10,7 @@ pipeline {
             }
         }
         stage('sonar analysis') {
+            agent { label 'Docker' }
             steps {
                 // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
                 withSonarQubeEnv('SONAR_CLOUD') {
