@@ -13,7 +13,7 @@ pipeline {
             agent { label 'Docker' }
             steps {
                 withSonarQubeEnv('SONARCLOUD') {
-                sh 'mvn clean verify sonar:sonar'
+                sh 'mvn clean verify sonar:sonar -Dsonar.Organizations=javaproject-spc'
                 }
             }
         }
