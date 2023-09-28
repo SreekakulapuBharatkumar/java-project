@@ -21,7 +21,11 @@ pipeline {
         stage('Docker Image Build & Test') {
             agent { label 'Docker' }
             steps {
-                sh 'docker image build -t spc:latest .'
+                sh 'sonar-scanner \
+                    -Dsonar.organization=javaproject-spc \
+                    -Dsonar.projectKey=javaproject-spc_spc \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io'
             }
         }              
     }
