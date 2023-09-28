@@ -14,7 +14,7 @@ pipeline {
             steps {
                 // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
                 withSonarQubeEnv('SONAR_CLOUD') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.organization=javaproject_spc -Dsonar.projectKey=spc'
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=javaproject-spc_spc'
                 }
             }
         }
